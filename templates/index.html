@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Techno Coaching Center AI</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* majestic */
+    color: white;
+}
+
+/* Title */
+h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Chat box */
+#chat-box {
+    width: 70%;
+    height: 420px;
+    margin: auto;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+/* Messages */
+.bot {
+    background: #1e90ff;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    width: fit-content;
+    max-width: 80%;
+}
+
+.user {
+    background: #32cd32;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    width: fit-content;
+    max-width: 80%;
+    margin-left: auto;
+}
+
+/* Input area */
+#input-area {
+    width: 70%;
+    margin: 15px auto;
+    display: flex;
+}
+
+#msg {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+}
+
+button {
+    margin-left: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #chat-box, #input-area {
+        width: 95%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🤖 Techno Coaching Center AI</h1>
+
+<div id="chat-box"></div>
+
+<div id="input-area">
+    <input type="text" id="msg" placeholder="Type message and press Enter..." />
+    <button onclick="send()">Send</button>
+</div>
+
+<script>
+const chatBox = document.getElementById("chat-box");
+const msgInput = document.getElementById("msg");
+
+/* 1️⃣ AUTO WELCOME MESSAGE */
+window.onload = function () {
+    chatBox.innerHTML += `
+        <div class="bot">
+            👋 Welcome to <b>Techno Coaching Center</b><br>
+            Ask about courses, timing, fee, location or admission.
+        </div>
+    `;
+};
+
+/* SEND MESSAGE */
+function send() {
+    let msg = msgInput.value.trim();
+    if (msg === "") return;
+
+    // User message
+    chatBox.innerHTML += `<div class="user">${msg}</div>`;
+
+    fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+    })
+    .then(res => res.json())
+    .then(data => {
+        chatBox.innerHTML += `<div class="bot">${data.reply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    msgInput.value = "";
+}
+
+/* 2️⃣ PRESS ENTER TO SEND */
+msgInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        send();
+    }
+});
+</script>
+
+</body>
+</html>
