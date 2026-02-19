@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-import os
 
 app = Flask(__name__)
 
@@ -23,26 +22,23 @@ def ai_agent(user_msg):
         return "Each course duration is 3 months."
 
     elif "contact" in msg or "phone" in msg or "number" in msg or "call" in msg:
-        return "Contact us at: 885881274"
+        return "Contact us at: 885881274."
 
     else:
-        return "I'm your AI assistant 😊 Ask about courses, timing, fee, location or admission."
-
+        return "Please visit our center for more details."
 
 # ---------------- ROUTES ----------------
 @app.route("/")
 def home():
     return render_template("index.html")
 
-
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_message = request.json.get("message", "")
-    reply = ai_agent(user_message)
+    data = request.get_json()
+    user_msg = data.get("message", "")
+    reply = ai_agent(user_msg)
     return jsonify({"reply": reply})
 
-
-# ---------------- RUN (IMPORTANT FOR ONLINE) ----------------
+# ---------------- RUN APP ----------------
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run()
