@@ -1,125 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Techno Coaching Center AI</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* majestic */
-    color: white;
-}
-
-/* Title */
-h1 {
-    text-align: center;
-    padding: 20px;
-}
-
-/* Chat box */
-#chat-box {
-    width: 70%;
-    height: 420px;
-    margin: auto;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 15px;
-    overflow-y: auto;
-}
-
-/* Messages */
-.bot {
-    background: #1e90ff;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 8px;
-    width: fit-content;
-    max-width: 80%;
-}
-
-.user {
-    background: #32cd32;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 8px;
-    width: fit-content;
-    max-width: 80%;
-    margin-left: auto;
-}
-
-/* Input area */
-#input-area {
-    width: 70%;
-    margin: 15px auto;
-    display: flex;
-}
-
-#msg {
-    flex: 1;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    border: none;
-}
-
-button {
-    margin-left: 10px;
-    padding: 12px 20px;
-    font-size: 16px;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #218838;
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-    #chat-box, #input-area {
-        width: 95%;
-    }
-}
-</style>
+    <title>Techno Coaching Center</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
-<h1>🤖 Techno Coaching Center AI</h1>
+<header>
+    <h1>🤖 Techno Coaching Center AI</h1>
+    <p>Learn | Grow | Succeed</p>
+</header>
 
-<div id="chat-box"></div>
+<nav>
+    <a href="/">Home</a>
+    <a href="#courses">Courses</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+</nav>
 
-<div id="input-area">
-    <input type="text" id="msg" placeholder="Type message and press Enter..." />
-    <button onclick="send()">Send</button>
+<div class="hero">
+    <div class="hero-text">
+        <h2>Best Computer Coaching Center</h2>
+        <p>
+            We provide professional training in Python, Java, SQL, Excel and CSC.
+            Learn with experienced trainers and practical teaching.
+        </p>
+    </div>
+    <img src="/static/images/classroom.jpg" alt="Classroom">
 </div>
 
+<div class="section" id="courses">
+    <h3>📘 Our Courses</h3>
+    <ul>
+        <li>Python Programming</li>
+        <li>Java Programming</li>
+        <li>SQL & Database</li>
+        <li>Excel & Office Tools</li>
+        <li>CSC Computer Courses</li>
+    </ul>
+</div>
+
+<div class="section" id="about">
+    <h3>🏫 About Us</h3>
+    <p>
+        Techno Coaching Center is located in Saidapet near KFC Ashok Nagar.
+        We focus on practical learning and student success.
+    </p>
+</div>
+
+<div class="section" id="contact">
+    <h3>📍 Contact</h3>
+    <p><b>Location:</b> Saidapet, Near KFC Ashok Nagar, Chennai</p>
+    <p><b>Phone:</b> 885881274</p>
+</div>
+
+<div class="section chat-container">
+    <h3>💬 Ask Our AI Assistant</h3>
+
+    <div id="chat-box" style="height:300px; overflow:auto; border:1px solid #ccc; padding:10px;"></div>
+
+    <input type="text" id="msg" placeholder="Type your message..."
+           style="width:80%; padding:10px;">
+    <button onclick="sendMsg()" style="padding:10px;">Send</button>
+</div>
+
+<footer>
+    © 2026 Techno Coaching Center | All Rights Reserved
+</footer>
+
 <script>
-const chatBox = document.getElementById("chat-box");
-const msgInput = document.getElementById("msg");
+function sendMsg() {
+    let msg = document.getElementById("msg").value;
+    if (!msg) return;
 
-/* 1️⃣ AUTO WELCOME MESSAGE */
-window.onload = function () {
-    chatBox.innerHTML += `
-        <div class="bot">
-            👋 Welcome to <b>Techno Coaching Center</b><br>
-            Ask about courses, timing, fee, location or admission.
-        </div>
-    `;
-};
-
-/* SEND MESSAGE */
-function send() {
-    let msg = msgInput.value.trim();
-    if (msg === "") return;
-
-    // User message
-    chatBox.innerHTML += `<div class="user">${msg}</div>`;
+    let box = document.getElementById("chat-box");
+    box.innerHTML += "<p><b>You:</b> " + msg + "</p>";
 
     fetch("/chat", {
         method: "POST",
@@ -128,19 +83,12 @@ function send() {
     })
     .then(res => res.json())
     .then(data => {
-        chatBox.innerHTML += `<div class="bot">${data.reply}</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight;
+        box.innerHTML += "<p><b>AI:</b> " + data.reply + "</p>";
+        box.scrollTop = box.scrollHeight;
     });
 
-    msgInput.value = "";
+    document.getElementById("msg").value = "";
 }
-
-/* 2️⃣ PRESS ENTER TO SEND */
-msgInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        send();
-    }
-});
 </script>
 
 </body>
