@@ -16,7 +16,7 @@ def ai_agent(user_msg):
         return "Please visit our center for fee details."
 
     elif "location" in msg or "area" in msg or "where" in msg or "saidapet" in msg:
-        return "Our Techno Coaching Center is in Saidapet, near your local CSC."
+        return "Our Techno Coaching Center is in saidapet near kfc ashok nagar ."
 
     elif "duration" in msg or "how long" in msg:
         return "Each course duration is 3 months."
@@ -42,4 +42,5 @@ def chat():
 # ---------------- RUN APP ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
